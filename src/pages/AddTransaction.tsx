@@ -3,10 +3,18 @@ import { useNavigate } from "react-router-dom"
 import { transactionAPI } from "../services/api"
 import { useCategories } from "../hooks/useFinance"
 
+import TransactionTypeToggle from "../components/add_transaction/TransactionTypeToggle"
+import TransactionForm from "../components/add_transaction/TransactionForm"
+
 const AddTransaction: React.FC = () => {
+
+  // Router navigation
   const navigate = useNavigate()
+
+  // Fetch categories from hook
   const { categories } = useCategories()
 
+  // Transaction form state
   const [form, setForm] = useState({
     amount: "",
     type: "expense" as "income" | "expense",
@@ -14,32 +22,47 @@ const AddTransaction: React.FC = () => {
     date: new Date().toISOString().split("T")[0],
     categoryId: "",
   })
+
+  // UI states
   const [error, setError] = useState("")
   const [loading, setLoading] = useState(false)
 
+  // Filter categories by transaction type
   const filteredCats = categories.filter((c) => c.type === form.type)
 
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
-  ) => {
+  // Handle field change
+  const handleChange = (e: React.ChangeEvent<any>) => {
     const { name, value } = e.target
+
     setForm((prev) => ({
       ...prev,
       [name]: value,
-      // Reset category when type changes
       ...(name === "type" ? { categoryId: "" } : {}),
     }))
   }
 
+  // Change transaction type
+  const changeType = (type: "income" | "expense") => {
+    setForm((p) => ({ ...p, type, categoryId: "" }))
+  }
+
+  // Submit form
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+
     setError("")
-    if (!form.amount || isNaN(Number(form.amount)) || Number(form.amount) <= 0) {
+
+    // Basic validation
+    if (!form.amount || Number(form.amount) <= 0) {
       setError("Please enter a valid amount")
       return
     }
+
     setLoading(true)
+
     try {
+
+      // Call API to create transaction
       await transactionAPI.create({
         amount: Number(form.amount),
         type: form.type,
@@ -47,8 +70,11 @@ const AddTransaction: React.FC = () => {
         date: form.date,
         categoryId: form.categoryId || undefined,
       })
+
+      // Redirect after success
       navigate("/transactions")
     } catch (err: any) {
+      // Handle API error
       setError(err?.response?.data?.message || "Failed to create transaction")
     } finally {
       setLoading(false)
@@ -57,6 +83,8 @@ const AddTransaction: React.FC = () => {
 
   return (
     <div className="add-tx-page">
+
+      {/* Page header */}
       <div className="page-header">
         <div>
           <h1 className="page-title">Add Transaction</h1>
@@ -65,108 +93,24 @@ const AddTransaction: React.FC = () => {
       </div>
 
       <div className="form-card">
-        {/* Type Toggle */}
-        <div className="type-toggle">
-          <button
-            type="button"
-            className={`type-btn ${form.type === "expense" ? "type-btn-expense-active" : ""}`}
-            onClick={() => setForm((p) => ({ ...p, type: "expense", categoryId: "" }))}
-          >
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-              <path d="M12 5v14M19 12l-7 7-7-7" />
-            </svg>
-            Expense
-          </button>
-          <button
-            type="button"
-            className={`type-btn ${form.type === "income" ? "type-btn-income-active" : ""}`}
-            onClick={() => setForm((p) => ({ ...p, type: "income", categoryId: "" }))}
-          >
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-              <path d="M12 19V5M5 12l7-7 7 7" />
-            </svg>
-            Income
-          </button>
-        </div>
 
-        <form onSubmit={handleSubmit} className="tx-form">
-          {error && <div className="auth-error">{error}</div>}
+        {/* Income / Expense toggle */}
+        <TransactionTypeToggle
+          type={form.type}
+          onChange={changeType}
+        />
 
-          <div className="field-group">
-            <label className="field-label">Amount (VND)</label>
-            <input
-              type="number"
-              name="amount"
-              className="field-input field-input-lg"
-              placeholder="0"
-              min="0"
-              step="1000"
-              value={form.amount}
-              onChange={handleChange}
-              required
-            />
-          </div>
+        {/* Transaction form */}
+        <TransactionForm
+          form={form}
+          categories={filteredCats}
+          error={error}
+          loading={loading}
+          onChange={handleChange}
+          onSubmit={handleSubmit}
+          onCancel={() => navigate(-1)}
+        />
 
-          <div className="form-row">
-            <div className="field-group">
-              <label className="field-label">Date</label>
-              <input
-                type="date"
-                name="date"
-                className="field-input"
-                value={form.date}
-                onChange={handleChange}
-                required
-              />
-            </div>
-
-            <div className="field-group">
-              <label className="field-label">Category</label>
-              <select
-                name="categoryId"
-                className="field-input"
-                value={form.categoryId}
-                onChange={handleChange}
-              >
-                <option value="">No category</option>
-                {filteredCats.map((c) => (
-                  <option key={c.id} value={c.id}>
-                    {c.name}
-                  </option>
-                ))}
-              </select>
-            </div>
-          </div>
-
-          <div className="field-group">
-            <label className="field-label">Description</label>
-            <textarea
-              name="description"
-              className="field-input field-textarea"
-              placeholder="What was this for?"
-              value={form.description}
-              onChange={handleChange}
-              rows={3}
-            />
-          </div>
-
-          <div className="form-actions">
-            <button
-              type="button"
-              className="btn-ghost"
-              onClick={() => navigate(-1)}
-            >
-              Cancel
-            </button>
-            <button
-              type="submit"
-              className={`btn-primary ${form.type === "income" ? "btn-income" : "btn-expense"}`}
-              disabled={loading}
-            >
-              {loading ? "Saving…" : `Save ${form.type === "income" ? "Income" : "Expense"}`}
-            </button>
-          </div>
-        </form>
       </div>
     </div>
   )
