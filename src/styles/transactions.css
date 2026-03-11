@@ -1,0 +1,165 @@
+/* ═══════════════════════════════════════
+   TRANSACTIONS
+═══════════════════════════════════════ */
+.tx-list-page {}
+.tx-list { display: flex; flex-direction: column; gap: 0; }
+.tx-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--border);
+}
+.tx-row:last-child { border-bottom: none; }
+
+.tx-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.tx-dot-income { background: var(--green); }
+.tx-dot-expense { background: var(--red); }
+
+.tx-info { flex: 1; min-width: 0; }
+.tx-info-wide { }
+.tx-desc {
+  font-size: 0.875rem;
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.tx-date { font-size: 0.75rem; color: var(--text-sub); margin-top: 2px; }
+.tx-meta { display: flex; align-items: center; gap: 8px; margin-top: 2px; }
+
+.tx-amount {
+  font-size: 0.9rem;
+  font-weight: 600;
+  flex-shrink: 0;
+  font-variant-numeric: tabular-nums;
+}
+.tx-amount-income { color: var(--green); }
+.tx-amount-expense { color: var(--red); }
+
+.tx-type-badge {
+  width: 30px; height: 30px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 700;
+  font-size: 14px;
+  flex-shrink: 0;
+}
+.badge-income { background: var(--green-dim); color: var(--green); }
+.badge-expense { background: var(--red-dim); color: var(--red); }
+
+.tx-cat-tag {
+  display: inline-block;
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  color: var(--text-sub);
+  font-size: 0.7rem;
+  padding: 1px 7px;
+  border-radius: 20px;
+}
+
+.tx-delete-btn {
+  color: var(--text-muted);
+  padding: 6px;
+  border-radius: 6px;
+  opacity: 0;
+  transition: all 0.15s;
+  flex-shrink: 0;
+}
+.tx-row:hover .tx-delete-btn { opacity: 1; }
+.tx-delete-btn:hover { color: var(--red); background: var(--red-dim); }
+
+/* ── Filter bar ── */
+.filter-bar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+}
+.filter-select {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  color: var(--text);
+  padding: 8px 14px;
+  border-radius: var(--radius-sm);
+  font-size: 0.85rem;
+  font-family: inherit;
+  outline: none;
+  cursor: pointer;
+  transition: border-color 0.15s;
+  appearance: none;
+}
+.filter-select:focus { border-color: var(--gold); }
+
+.filter-types { display: flex; gap: 4px; }
+.filter-type-btn {
+  padding: 7px 14px;
+  border-radius: var(--radius-sm);
+  font-size: 0.825rem;
+  color: var(--text-sub);
+  border: 1px solid var(--border);
+  background: var(--bg2);
+  transition: all 0.15s;
+}
+.filter-type-btn:hover { border-color: var(--border-hover); color: var(--text); }
+.filter-type-active { background: var(--gold-dim); border-color: rgba(201,168,76,0.4); color: var(--gold-light); }
+
+/* ═══════════════════════════════════════
+   ADD TRANSACTION PAGE
+═══════════════════════════════════════ */
+.add-tx-page {}
+.form-card {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 28px;
+  max-width: 560px;
+}
+
+.type-toggle {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 26px;
+}
+.type-btn {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 11px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  background: var(--bg3);
+  color: var(--text-sub);
+  font-size: 0.875rem;
+  font-weight: 500;
+  transition: all 0.15s;
+}
+.type-btn:hover { border-color: var(--border-hover); color: var(--text); }
+.type-btn-income-active {
+  background: var(--green-dim);
+  border-color: rgba(76,175,130,0.4);
+  color: var(--green);
+}
+.type-btn-expense-active {
+  background: var(--red-dim);
+  border-color: rgba(224,92,92,0.4);
+  color: var(--red);
+}
+
+.tx-form { display: flex; flex-direction: column; gap: 20px; }
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+@media (max-width: 480px) { .form-row { grid-template-columns: 1fr; } }
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  padding-top: 8px;
+}

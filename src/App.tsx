@@ -10,17 +10,14 @@ import Register from "./pages/Register"
 import Dashboard from "./pages/Dashboard"
 import AddTransaction from "./pages/AddTransaction"
 import TransactionList from "./pages/TransactionList"
+import Wallets from "./pages/Wallet"
 
 const App: React.FC = () => {
   return (
-    // Global authentication context (user, token, login, logout)
-    <AuthProvider>
+    <AuthProvider>        {/* Global authentication context (user, token, login, logout) */}
 
-      {/* Router that enables navigation between pages */}
-      <BrowserRouter>
-
-        {/* Container for all route definitions */}
-        <Routes>
+      <BrowserRouter>     {/* Router that enables navigation between pages */}
+        <Routes>          {/* Container for all route definitions */}
 
           {/* Public routes (no login required) */}
           <Route path="/login" element={<Login />} />
@@ -57,6 +54,18 @@ const App: React.FC = () => {
               <PrivateRoute>
                 <Layout>
                   <AddTransaction />
+                </Layout>
+              </PrivateRoute>
+            }
+          />
+
+          {/* Wallets page */}
+          <Route
+            path="/wallets"
+            element={
+              <PrivateRoute>
+                <Layout>
+                  <Wallets />
                 </Layout>
               </PrivateRoute>
             }

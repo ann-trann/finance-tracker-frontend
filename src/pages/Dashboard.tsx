@@ -1,15 +1,17 @@
 import React from "react"
 import { Link } from "react-router-dom"
-import { useSummary, useTransactions } from "../hooks/useFinance"
+import { useSummary, useTransactions, useWallets } from "../hooks"
 
 import SummaryCards from "../components/dashboard/SummaryCards"
 import MonthlyChart from "../components/dashboard/MonthlyChart"
 import RecentTransactions from "../components/dashboard/RecentTransactions"
+import WalletList from "../components/dashboard/WalletList"
 
 const Dashboard: React.FC = () => {
 
   const { summary, loading: summaryLoading } = useSummary()
   const { transactions, loading: txLoading } = useTransactions()
+  const { wallets, loading: walletLoading } = useWallets()
 
   return (
     <div className="dashboard">
@@ -28,6 +30,12 @@ const Dashboard: React.FC = () => {
 
       {/* Summary cards */}
       <SummaryCards summary={summary} loading={summaryLoading} />
+
+      {/* Wallet list */}
+      <WalletList
+        wallets={wallets}
+        loading={walletLoading}
+      />
 
       {/* Monthly chart */}
       <MonthlyChart

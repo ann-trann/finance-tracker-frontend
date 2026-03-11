@@ -1,6 +1,6 @@
 import React, { useState } from "react"
 import { Link } from "react-router-dom"
-import { useTransactions } from "../hooks/useFinance"
+import { useTransactions } from "../hooks"
 
 import TransactionFilters from "../components/transactions/TransactionFilters"
 import TransactionTable from "../components/transactions/TransactionTable"

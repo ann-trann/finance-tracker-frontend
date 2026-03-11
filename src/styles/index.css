@@ -1,0 +1,12 @@
+/* ═══════════════════════════════════════
+   MAIN ENTRY POINT
+   Import order matters — variables first,
+   then layout, then features/pages.
+═══════════════════════════════════════ */
+
+@import './variables.css';   /* Design tokens & reset      */
+@import './layout.css';      /* App shell, sidebar, nav    */
+@import './auth.css';        /* Login / register pages     */
+@import './components.css';  /* Fields, buttons, cards     */
+@import './dashboard.css';   /* Summary cards, chart       */
+@import './transactions.css';/* Tx list, filters, add form */

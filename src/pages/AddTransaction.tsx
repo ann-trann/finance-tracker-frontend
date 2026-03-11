@@ -1,7 +1,7 @@
 import React, { useState } from "react"
 import { useNavigate } from "react-router-dom"
-import { transactionAPI } from "../services/api"
-import { useCategories } from "../hooks/useFinance"
+import { transactionAPI } from "../services"
+import { useCategories } from "../hooks"
 
 import TransactionTypeToggle from "../components/add_transaction/TransactionTypeToggle"
 import TransactionForm from "../components/add_transaction/TransactionForm"
@@ -21,6 +21,7 @@ const AddTransaction: React.FC = () => {
     description: "",
     date: new Date().toISOString().split("T")[0],
     categoryId: "",
+    walletId: ""
   })
 
   // UI states
@@ -69,6 +70,7 @@ const AddTransaction: React.FC = () => {
         description: form.description,
         date: form.date,
         categoryId: form.categoryId || undefined,
+        walletId: form.walletId
       })
 
       // Redirect after success
