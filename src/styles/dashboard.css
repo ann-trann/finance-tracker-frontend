@@ -80,27 +80,60 @@
 
 .wallet-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-  gap: 10px;
+  grid-template-columns: repeat(auto-fill, minmax(175px, 1fr));
+  gap: 12px;
+  margin-bottom: 4px;
 }
 
 .wallet-card {
-  background: var(--bg3);
+  background: var(--bg2);
   border: 1px solid var(--border);
-  border-radius: var(--radius-sm);
-  padding: 14px 16px;
+  border-radius: var(--radius);
+  padding: 16px 18px;
   display: flex;
   flex-direction: column;
-  gap: 6px;
-  transition: border-color 0.15s, box-shadow 0.15s;
+  gap: 10px;
+  transition: border-color 0.2s, box-shadow 0.2s, transform 0.15s;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Subtle gold accent line on top */
+.wallet-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--gold), transparent);
+  opacity: 0;
+  transition: opacity 0.2s;
 }
 .wallet-card:hover {
-  border-color: var(--border-hover);
-  box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+  border-color: rgba(201,168,76,0.35);
+  box-shadow: 0 4px 18px rgba(0,0,0,0.07);
+  transform: translateY(-1px);
+}
+.wallet-card:hover::before {
+  opacity: 1;
+}
+
+/* Small wallet icon + name on same row */
+.wallet-card-header {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+.wallet-card-icon {
+  width: 22px; height: 22px;
+  border-radius: 6px;
+  background: var(--gold-dim);
+  display: flex; align-items: center; justify-content: center;
+  color: var(--gold-light);
+  flex-shrink: 0;
 }
 
 .wallet-name {
-  font-size: 0.75rem;
+  font-size: 0.78rem;
   font-weight: 500;
   color: var(--text-sub);
   text-transform: uppercase;
@@ -111,10 +144,11 @@
 }
 .wallet-balance {
   font-family: 'DM Serif Display', serif;
-  font-size: 1.1rem;
+  font-size: 1.25rem;
   color: var(--text);
   line-height: 1;
   font-variant-numeric: tabular-nums;
+  padding-bottom: 2px;
 }
 
 /* Total row below the grid */
@@ -122,19 +156,23 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-top: 12px;
-  padding-top: 12px;
-  border-top: 1px solid var(--border);
+  margin-top: 14px;
+  padding: 12px 16px;
+  background: var(--gold-dim);
+  border: 1px solid rgba(201,168,76,0.2);
+  border-radius: var(--radius-sm);
 }
 .wallet-total-label {
-  font-size: 0.8rem;
-  color: var(--text-sub);
-  font-weight: 500;
+  font-size: 0.78rem;
+  color: var(--gold-light);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
 }
 .wallet-total-value {
   font-family: 'DM Serif Display', serif;
-  font-size: 1rem;
-  color: var(--text);
+  font-size: 1.1rem;
+  color: var(--gold-light);
   font-variant-numeric: tabular-nums;
 }
 

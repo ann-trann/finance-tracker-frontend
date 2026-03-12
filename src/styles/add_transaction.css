@@ -1,0 +1,333 @@
+/* ═══════════════════════════════════════════════════════
+   ADD TRANSACTION — styles
+   Requires the global CSS variables from global.css:
+   --bg2, --bg3, --border, --border-hover, --radius,
+   --radius-sm, --text, --text-sub, --text-muted,
+   --red, --red-dim, --green, --green-dim,
+   --gold, --gold-dim, --gold-light
+═══════════════════════════════════════════════════════ */
+
+/* ── Page & card ── */
+.at-page { max-width: 900px; }
+
+.at-card {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 28px;
+}
+
+/* ── Type tabs (Chi / Thu / Đi vay) ── */
+.at-type-tabs {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.at-type-tab {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  padding: 14px 8px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  background: var(--bg3);
+  color: var(--text-sub);
+  font-family: inherit;
+  font-size: 0.78rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.at-type-tab:hover { border-color: var(--border-hover); color: var(--text); }
+.at-type-tab-active { font-weight: 600; }
+
+.at-type-tab-active.tab-expense { background: var(--red-dim);  border-color: rgba(220,38,38,0.25); color: var(--red); }
+.at-type-tab-active.tab-income  { background: var(--green-dim); border-color: rgba(22,163,74,0.25); color: var(--green); }
+.at-type-tab-active.tab-loan    { background: var(--gold-dim);  border-color: rgba(201,168,76,0.3); color: var(--gold-light); }
+
+.at-tab-icon  { font-size: 1.25rem; line-height: 1; }
+.at-tab-label { text-align: center; line-height: 1.3; }
+
+/* ── Active type indicator strip ── */
+.at-indicator {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 8px 14px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  margin-bottom: 24px;
+  text-align: center;
+  letter-spacing: 0.02em;
+}
+.at-indicator.ind-expense { background: var(--red-dim);  border-color: rgba(220,38,38,0.2);  color: var(--red); }
+.at-indicator.ind-income  { background: var(--green-dim); border-color: rgba(22,163,74,0.2);  color: var(--green); }
+.at-indicator.ind-loan    { background: var(--gold-dim);  border-color: rgba(201,168,76,0.25); color: var(--gold-light); }
+
+/* ── Form ── */
+.at-form { display: flex; flex-direction: column; gap: 20px; }
+
+/* Ngày + Danh mục cạnh nhau, có khoảng cách */
+.at-form .form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+/* Nút Huỷ + Lưu: căn phải, có khoảng cách */
+.at-form .form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 4px;
+}
+
+/* Amount field */
+.amount-wrap { position: relative; }
+.amount-prefix {
+  position: absolute;
+  left: 14px; top: 50%;
+  transform: translateY(-50%);
+  font-size: 1.1rem;
+  font-weight: 600;
+  pointer-events: none;
+}
+.amount-prefix-expense { color: var(--red); }
+.amount-prefix-income  { color: var(--green); }
+.amount-prefix-loan    { color: var(--gold); }
+.amount-input { padding-left: 32px !important; }
+.amount-input:focus { border-color: var(--gold) !important; }
+
+/* Category / Wallet trigger buttons */
+.cat-trigger {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  text-align: left;
+  font-family: inherit;
+  font-size: 0.9rem;
+  transition: all 0.15s;
+}
+.cat-trigger:hover { border-color: var(--border-hover); }
+.cat-trigger .placeholder { color: var(--text-muted); }
+.cat-trigger-arrow { font-size: 1rem; color: var(--text-muted); flex-shrink: 0; }
+
+.cat-selected-expense { border-color: rgba(220,38,38,0.3) !important; color: var(--red) !important;        background: var(--red-dim) !important; }
+.cat-selected-income  { border-color: rgba(22,163,74,0.3) !important;  color: var(--green) !important;      background: var(--green-dim) !important; }
+.cat-selected-loan    { border-color: rgba(201,168,76,0.3) !important; color: var(--gold-light) !important; background: var(--gold-dim) !important; }
+
+/* Wallet trigger inner layout */
+.wallet-trigger-inner { display: flex; align-items: center; gap: 7px; flex: 1; overflow: hidden; }
+.wallet-trigger-icon  { font-size: 1rem; flex-shrink: 0; }
+.wallet-trigger-bal   { color: var(--text-muted); font-size: 0.8rem; font-weight: 400; }
+
+/* Submit button */
+.at-submit {
+  font-family: inherit;
+  font-size: 0.875rem;
+  font-weight: 600;
+  padding: 12px 24px;
+  border-radius: var(--radius-sm);
+  border: none;
+  cursor: pointer;
+  transition: all 0.15s;
+  letter-spacing: 0.01em;
+}
+.at-submit:hover:not(:disabled) { transform: translateY(-1px); }
+.at-submit:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+
+.at-submit-expense { background: var(--red);   color: #fff; }
+.at-submit-expense:hover:not(:disabled) { background: #ef4444; }
+.at-submit-income  { background: var(--green); color: #fff; }
+.at-submit-income:hover:not(:disabled)  { background: #22c55e; }
+.at-submit-loan    { background: var(--gold);  color: #0c0d0f; }
+.at-submit-loan:hover:not(:disabled)    { background: #d4a017; }
+
+/* ─────────────────────────────────────────────────────
+   PICKER OVERLAY (shared by CategoryPicker & WalletPicker)
+───────────────────────────────────────────────────── */
+.picker-overlay {
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,0.35);
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  z-index: 200;
+  backdrop-filter: blur(2px);
+}
+@media (min-width: 540px) { .picker-overlay { align-items: center; } }
+
+@keyframes slideUp {
+  from { transform: translateY(32px); opacity: 0; }
+  to   { transform: translateY(0);    opacity: 1; }
+}
+
+.picker-card {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 18px 18px 0 0;
+  width: 100%;
+  max-width: 480px;
+  max-height: 82vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  box-shadow: 0 -8px 40px rgba(0,0,0,0.12);
+  animation: slideUp 0.22s ease;
+}
+@media (min-width: 540px) {
+  .picker-card {
+    border-radius: 16px;
+    max-height: 72vh;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+  }
+}
+
+.picker-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 20px 14px;
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+}
+.picker-title { font-weight: 600; font-size: 0.95rem; color: var(--text); }
+.picker-close {
+  background: none; border: none; cursor: pointer;
+  color: var(--text-sub); font-size: 1rem;
+  padding: 4px 8px; border-radius: 6px;
+  font-family: inherit; transition: all 0.12s;
+}
+.picker-close:hover { color: var(--text); background: var(--bg3); }
+
+/* ── CategoryPicker tabs ── */
+.picker-tabs {
+  display: flex;
+  gap: 6px;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+}
+.picker-tab {
+  flex: 1;
+  padding: 8px 4px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  background: var(--bg3);
+  color: var(--text-sub);
+  font-size: 0.76rem;
+  font-weight: 500;
+  font-family: inherit;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.picker-tab:hover { border-color: var(--border-hover); color: var(--text); }
+
+.picker-tab-active-expense { background: var(--red-dim);  border-color: rgba(220,38,38,0.25); color: var(--red);        font-weight: 600; }
+.picker-tab-active-income  { background: var(--green-dim); border-color: rgba(22,163,74,0.25); color: var(--green);      font-weight: 600; }
+.picker-tab-active-loan    { background: var(--gold-dim);  border-color: rgba(201,168,76,0.3); color: var(--gold-light); font-weight: 600; }
+
+/* ── CategoryPicker list ── */
+.picker-list { overflow-y: auto; flex: 1; padding: 6px 0; }
+
+.picker-item {
+  display: flex; align-items: center; gap: 10px;
+  padding: 10px 20px;
+  transition: background 0.12s;
+}
+.picker-item-selectable { cursor: pointer; }
+.picker-item-selectable:hover { background: var(--bg3); }
+
+.picker-item-icon { font-size: 1.05rem; width: 22px; text-align: center; flex-shrink: 0; }
+.picker-item-name { flex: 1; font-size: 0.875rem; color: var(--text); font-weight: 500; }
+
+/* Sub-categories — indented */
+.picker-subitem {
+  display: flex; align-items: center; gap: 8px;
+  padding: 8px 20px 8px 44px;
+  cursor: pointer;
+  color: var(--text-sub);
+  transition: background 0.12s;
+}
+.picker-subitem:hover { background: var(--bg3); color: var(--text); }
+.picker-sub-dot      { width: 5px; height: 5px; border-radius: 50%; flex-shrink: 0; }
+.picker-subitem-icon { font-size: 0.85rem; width: 18px; text-align: center; flex-shrink: 0; opacity: 0.7; }
+.picker-subitem-name { font-size: 0.845rem; flex: 1; }
+
+/* Add new category button */
+.picker-add-btn {
+  flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  padding: 14px;
+  border-top: 1px solid var(--border);
+  border-left: none; border-right: none; border-bottom: none; border-radius: 0;
+  background: none; font-family: inherit;
+  font-size: 0.85rem; font-weight: 500;
+  cursor: pointer; transition: background 0.12s;
+}
+.picker-add-btn:hover { background: var(--bg3); }
+.picker-add-btn-expense { color: var(--red); }
+.picker-add-btn-income  { color: var(--green); }
+
+/* ── WalletPicker items ── */
+.wpicker-item {
+  display: flex; align-items: center; gap: 14px;
+  padding: 14px 20px;
+  cursor: pointer; transition: background 0.12s;
+}
+.wpicker-item:hover { background: var(--bg3); }
+
+.wpicker-item-active-expense { background: var(--red-dim); }
+.wpicker-item-active-income  { background: var(--green-dim); }
+.wpicker-item-active-loan    { background: var(--gold-dim); }
+.wpicker-item-active-expense:hover { background: var(--red-dim); }
+.wpicker-item-active-income:hover  { background: var(--green-dim); }
+.wpicker-item-active-loan:hover    { background: var(--gold-dim); }
+
+.wpicker-icon-wrap {
+  width: 42px; height: 42px;
+  border-radius: var(--radius-sm);
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.2rem; flex-shrink: 0;
+  transition: all 0.15s;
+}
+.wpicker-icon-active-expense { background: var(--red-dim);  border-color: rgba(220,38,38,0.25); }
+.wpicker-icon-active-income  { background: var(--green-dim); border-color: rgba(22,163,74,0.25); }
+.wpicker-icon-active-loan    { background: var(--gold-dim);  border-color: rgba(201,168,76,0.3); }
+
+.wpicker-info { flex: 1; }
+.wpicker-name { display: block; font-size: 0.9rem; font-weight: 500; color: var(--text); }
+.wpicker-name-expense { color: var(--red); }
+.wpicker-name-income  { color: var(--green); }
+.wpicker-name-loan    { color: var(--gold-light); }
+.wpicker-bal  { font-size: 0.8rem; color: var(--text-sub); margin-top: 2px; display: block; font-variant-numeric: tabular-nums; }
+
+.wpicker-check { font-size: 0.95rem; font-weight: 700; flex-shrink: 0; }
+.wpicker-check-expense { color: var(--red); }
+.wpicker-check-income  { color: var(--green); }
+.wpicker-check-loan    { color: var(--gold); }
+
+/* ── AddCategoryModal card ── */
+.addcat-card {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 24px;
+  width: 90%; max-width: 380px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.14);
+  animation: slideUp 0.2s ease;
+}
+.addcat-sub { font-size: 0.82rem; color: var(--text-sub); margin: 8px 0 16px; }
+.addcat-input { width: 100%; box-sizing: border-box; }
+
+/* ── Responsive ── */
+@media (max-width: 480px) {
+  .at-type-tabs { gap: 6px; }
+  .at-tab-label { font-size: 0.7rem; }
+  .at-card { padding: 20px 16px; }
+}

@@ -10,3 +10,5 @@
 @import './components.css';  /* Fields, buttons, cards     */
 @import './dashboard.css';   /* Summary cards, chart       */
 @import './transactions.css';/* Tx list, filters, add form */
+@import './add_transaction.css';
+@import './transaction_detail_modal.css';

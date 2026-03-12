@@ -1,4 +1,5 @@
 export type CategoryType = "income" | "expense"
+export type TxType = CategoryType | "loan"
 
 export interface User {
   id: string
@@ -17,6 +18,7 @@ export interface Category {
   id: string
   name: string
   type: CategoryType
+  icon?: string
   isDefault: boolean
 
   userId?: string
