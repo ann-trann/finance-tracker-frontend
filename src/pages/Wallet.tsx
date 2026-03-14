@@ -1,41 +1,59 @@
 import React, { useState } from "react"
+import { useNavigate } from "react-router-dom"
 import { useWallets } from "../hooks"
 import { Wallet } from "../types"
 import WalletModal from "../components/wallets/WalletModal"
+import DeleteConfirmModal from "../components/wallets/DeleteConfirmModal"
 
 const fmt = (n: number) =>
   new Intl.NumberFormat("vi-VN", { style: "currency", currency: "VND" }).format(n)
 
 const Wallets: React.FC = () => {
+  const navigate = useNavigate()
   const { wallets, loading, error, createWallet, updateWallet, deleteWallet } = useWallets()
 
   // Modal state: undefined = closed, null = create, Wallet = edit
   const [modalTarget, setModalTarget] = useState<Wallet | null | undefined>(undefined)
-  const [deletingId, setDeletingId] = useState<string | null>(null)
-  const [deleteError, setDeleteError] = useState<string | null>(null)
+
+  // Delete confirm state
+  const [deleteTarget, setDeleteTarget] = useState<Wallet | null>(null)
+  const [deleting, setDeleting] = useState(false)
+  const [deleteError, setDeleteError] = useState("")
 
   const totalBalance = wallets.reduce((sum, w) => sum + Number(w.balance), 0)
 
-  const handleSave = async (name: string, balance: number) => {
+  const handleSave = async (name: string, initialBalance: number) => {
     if (modalTarget) {
-      await updateWallet(modalTarget.id, name, balance)
+      await updateWallet(modalTarget.id, name, initialBalance)
     } else {
-      await createWallet(name, balance)
+      await createWallet(name, initialBalance)
     }
   }
 
-  const handleDelete = async (wallet: Wallet) => {
-    setDeleteError(null)
-    setDeletingId(wallet.id)
+  const handleDeleteConfirm = async () => {
+    if (!deleteTarget) return
+    setDeleting(true)
+    setDeleteError("")
     try {
-      await deleteWallet(wallet.id)
+      await deleteWallet(deleteTarget.id)
+      setDeleteTarget(null)
     } catch (err: any) {
-      // Server returns 400 when wallet has transactions
       const msg = err?.response?.data?.message ?? "Failed to delete wallet"
       setDeleteError(msg)
     } finally {
-      setDeletingId(null)
+      setDeleting(false)
     }
+  }
+
+  const handleEdit = (e: React.MouseEvent, wallet: Wallet) => {
+    e.stopPropagation()
+    setModalTarget(wallet)
+  }
+
+  const handleDeleteClick = (e: React.MouseEvent, wallet: Wallet) => {
+    e.stopPropagation()
+    setDeleteError("")
+    setDeleteTarget(wallet)
   }
 
   return (
@@ -47,31 +65,17 @@ const Wallets: React.FC = () => {
           <h1 className="page-title">Wallets</h1>
           <p className="page-sub">Manage your accounts and balances</p>
         </div>
-        <button
-          className="btn-primary"
-          onClick={() => setModalTarget(null)}
-        >
+        <button className="btn-primary" onClick={() => setModalTarget(null)}>
           + New Wallet
         </button>
       </div>
 
-      {/* Delete error banner */}
-      {deleteError && (
-        <div className="auth-error" style={{ marginBottom: 16 }}>
-          {deleteError}
-          <button
-            style={{ marginLeft: 12, fontWeight: 600, cursor: "pointer", background: "none", border: "none", color: "inherit" }}
-            onClick={() => setDeleteError(null)}
-          >
-            ✕
-          </button>
-        </div>
-      )}
-
       {/* Total summary */}
       {!loading && wallets.length > 0 && (
         <div className="wallet-summary-bar">
-          <span className="wallet-summary-label">Total balance across {wallets.length} wallet{wallets.length !== 1 ? "s" : ""}</span>
+          <span className="wallet-summary-label">
+            Total balance across {wallets.length} wallet{wallets.length !== 1 ? "s" : ""}
+          </span>
           <span className="wallet-summary-total">{fmt(totalBalance)}</span>
         </div>
       )}
@@ -100,9 +104,14 @@ const Wallets: React.FC = () => {
       ) : (
         <div className="wallet-full-grid">
           {wallets.map((wallet) => (
-            <div key={wallet.id} className="wallet-full-card">
-
-              {/* Icon */}
+            <div
+              key={wallet.id}
+              className="wallet-full-card"
+              onClick={() => navigate(`/wallets/${wallet.id}`)}
+              role="button"
+              tabIndex={0}
+              onKeyDown={(e) => e.key === "Enter" && navigate(`/wallets/${wallet.id}`)}
+            >
               <div className="wallet-full-icon">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
                   <rect x="2" y="7" width="20" height="14" rx="2"/>
@@ -111,17 +120,15 @@ const Wallets: React.FC = () => {
                 </svg>
               </div>
 
-              {/* Info */}
               <div className="wallet-full-info">
                 <div className="wallet-full-name">{wallet.name}</div>
                 <div className="wallet-full-balance">{fmt(Number(wallet.balance))}</div>
               </div>
 
-              {/* Actions */}
               <div className="wallet-full-actions">
                 <button
                   className="wallet-action-btn wallet-action-edit"
-                  onClick={() => setModalTarget(wallet)}
+                  onClick={(e) => handleEdit(e, wallet)}
                   title="Edit"
                 >
                   <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -132,35 +139,40 @@ const Wallets: React.FC = () => {
                 </button>
                 <button
                   className="wallet-action-btn wallet-action-delete"
-                  onClick={() => handleDelete(wallet)}
-                  disabled={deletingId === wallet.id}
+                  onClick={(e) => handleDeleteClick(e, wallet)}
                   title="Delete"
                 >
-                  {deletingId === wallet.id ? (
-                    <span className="spinner" style={{ borderTopColor: "currentColor" }} />
-                  ) : (
-                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                      <polyline points="3 6 5 6 21 6"/>
-                      <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/>
-                      <path d="M10 11v6M14 11v6"/>
-                      <path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/>
-                    </svg>
-                  )}
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <polyline points="3 6 5 6 21 6"/>
+                    <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/>
+                    <path d="M10 11v6M14 11v6"/>
+                    <path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/>
+                  </svg>
                   Delete
                 </button>
               </div>
-
             </div>
           ))}
         </div>
       )}
 
-      {/* Modal */}
+      {/* Edit / Create Modal */}
       {modalTarget !== undefined && (
         <WalletModal
           wallet={modalTarget}
           onClose={() => setModalTarget(undefined)}
           onSave={handleSave}
+        />
+      )}
+
+      {/* Delete Confirm Modal */}
+      {deleteTarget && (
+        <DeleteConfirmModal
+          walletName={deleteTarget.name}
+          deleting={deleting}
+          error={deleteError}
+          onConfirm={handleDeleteConfirm}
+          onClose={() => { setDeleteTarget(null); setDeleteError("") }}
         />
       )}
 

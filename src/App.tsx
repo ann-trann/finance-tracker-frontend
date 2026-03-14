@@ -11,6 +11,8 @@ import Dashboard from "./pages/Dashboard"
 import AddTransaction from "./pages/AddTransaction"
 import TransactionList from "./pages/TransactionList"
 import Wallets from "./pages/Wallet"
+import WalletDetail from "./pages/WalletDetail"
+
 
 const App: React.FC = () => {
   return (
@@ -59,13 +61,25 @@ const App: React.FC = () => {
             }
           />
 
-          {/* Wallets page */}
+          {/* Wallets list page */}
           <Route
             path="/wallets"
             element={
               <PrivateRoute>
                 <Layout>
                   <Wallets />
+                </Layout>
+              </PrivateRoute>
+            }
+          />
+
+          {/* Wallet detail page — phải đặt TRƯỚC wildcard * */}
+          <Route
+            path="/wallets/:id"
+            element={
+              <PrivateRoute>
+                <Layout>
+                  <WalletDetail />
                 </Layout>
               </PrivateRoute>
             }

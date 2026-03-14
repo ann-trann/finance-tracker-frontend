@@ -9,6 +9,7 @@ export interface User {
 export interface Wallet {
   id: string
   name: string
+  initialBalance: string | number
   balance: string | number
   userId: string
   createdAt: string

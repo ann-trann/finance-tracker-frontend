@@ -4,25 +4,24 @@ import { Wallet } from "../../types"
 interface Props {
   wallet?: Wallet | null   // null = create mode, Wallet = edit mode
   onClose: () => void
-  onSave: (name: string, balance: number) => Promise<void>
+  onSave: (name: string, initialBalance: number) => Promise<void>
 }
 
 const WalletModal: React.FC<Props> = ({ wallet, onClose, onSave }) => {
   const [name, setName] = useState("")
-  const [balance, setBalance] = useState("0")
+  const [initialBalance, setInitialBalance] = useState("0")
   const [saving, setSaving] = useState(false)
   const [error, setError] = useState("")
 
   const isEdit = !!wallet
 
-  // Populate fields when editing
   useEffect(() => {
     if (wallet) {
       setName(wallet.name)
-      setBalance(String(wallet.balance))
+      setInitialBalance(String(wallet.initialBalance))
     } else {
       setName("")
-      setBalance("0")
+      setInitialBalance("0")
     }
     setError("")
   }, [wallet])
@@ -32,7 +31,7 @@ const WalletModal: React.FC<Props> = ({ wallet, onClose, onSave }) => {
       setError("Wallet name is required")
       return
     }
-    const bal = parseFloat(balance)
+    const bal = parseFloat(initialBalance)
     if (isNaN(bal) || bal < 0) {
       setError("Balance must be a valid non-negative number")
       return
@@ -48,7 +47,6 @@ const WalletModal: React.FC<Props> = ({ wallet, onClose, onSave }) => {
     }
   }
 
-  // Close on backdrop click
   const handleBackdrop = (e: React.MouseEvent<HTMLDivElement>) => {
     if (e.target === e.currentTarget) onClose()
   }
@@ -79,7 +77,7 @@ const WalletModal: React.FC<Props> = ({ wallet, onClose, onSave }) => {
 
           <div className="field-group" style={{ marginTop: 16 }}>
             <label className="field-label">
-              {isEdit ? "Balance" : "Opening Balance"}
+              {isEdit ? "Initial Balance" : "Opening Balance"}
             </label>
             <input
               className="field-input field-input-lg"
@@ -87,10 +85,15 @@ const WalletModal: React.FC<Props> = ({ wallet, onClose, onSave }) => {
               min="0"
               step="1000"
               placeholder="0"
-              value={balance}
-              onChange={(e) => setBalance(e.target.value)}
+              value={initialBalance}
+              onChange={(e) => setInitialBalance(e.target.value)}
               onKeyDown={(e) => e.key === "Enter" && handleSubmit()}
             />
+            {isEdit && (
+              <p style={{ fontSize: "0.75rem", color: "var(--text-muted)", marginTop: 4 }}>
+                Changing the initial balance will recalculate the current balance accordingly.
+              </p>
+            )}
           </div>
         </div>
 

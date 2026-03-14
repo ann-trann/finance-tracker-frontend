@@ -24,7 +24,7 @@ const WalletList: React.FC<Props> = ({ wallets, loading }) => {
         <Link to="/wallets" className="card-link">Manage →</Link>
       </div>
 
-       {/* Loading state */}
+      {/* Loading state */}
       {loading ? (
         <div className="loading-state">Loading…</div>
       ) : wallets.length === 0 ? (
@@ -40,8 +40,11 @@ const WalletList: React.FC<Props> = ({ wallets, loading }) => {
           {/* Wallet list */}
           <div className="wallet-grid">
             {wallets.map((wallet) => (
-              <div key={wallet.id} className="wallet-card">
-
+              <Link
+                key={wallet.id}
+                to={`/wallets/${wallet.id}`}
+                className="wallet-card wallet-card-link"
+              >
                 {/* Wallet header */}
                 <div className="wallet-card-header">
                   <div className="wallet-card-icon">
@@ -51,15 +54,14 @@ const WalletList: React.FC<Props> = ({ wallets, loading }) => {
                       <circle cx="16" cy="14" r="1.5" fill="currentColor" stroke="none"/>
                     </svg>
                   </div>
-
                   {/* Wallet name */}
                   <div className="wallet-name">{wallet.name}</div>
                 </div>
                 <div className="wallet-balance">{fmt(Number(wallet.balance))}</div>
-              </div>
+              </Link>
             ))}
           </div>
-          
+
           {/* Show total balance if there are multiple wallets */}
           {wallets.length > 1 && (
             <div className="wallet-total">

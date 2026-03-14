@@ -12,3 +12,4 @@
 @import './transactions.css';/* Tx list, filters, add form */
 @import './add_transaction.css';
 @import './transaction_detail_modal.css';
+@import './wallet_page.css';

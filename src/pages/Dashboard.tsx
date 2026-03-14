@@ -6,9 +6,9 @@ import SummaryCards from "../components/dashboard/SummaryCards"
 import MonthlyChart from "../components/dashboard/MonthlyChart"
 import RecentTransactions from "../components/dashboard/RecentTransactions"
 import WalletList from "../components/dashboard/WalletList"
+import TopTransactions from "../components/dashboard/TopTransactions"
 
 const Dashboard: React.FC = () => {
-
   const { summary, loading: summaryLoading } = useSummary()
   const { transactions, loading: txLoading } = useTransactions()
   const { wallets, loading: walletLoading } = useWallets()
@@ -22,7 +22,6 @@ const Dashboard: React.FC = () => {
           <h1 className="page-title">Dashboard</h1>
           <p className="page-sub">Your financial overview</p>
         </div>
-
         <Link to="/add-transaction" className="btn-primary btn-sm">
           + Add Transaction
         </Link>
@@ -32,22 +31,16 @@ const Dashboard: React.FC = () => {
       <SummaryCards summary={summary} loading={summaryLoading} />
 
       {/* Wallet list */}
-      <WalletList
-        wallets={wallets}
-        loading={walletLoading}
-      />
+      <WalletList wallets={wallets} loading={walletLoading} />
 
       {/* Monthly chart */}
-      <MonthlyChart
-        transactions={transactions}
-        loading={txLoading}
-      />
+      <MonthlyChart transactions={transactions} loading={txLoading} />
 
-      {/* Recent transactions */}
-      <RecentTransactions
-        transactions={transactions}
-        loading={txLoading}
-      />
+      {/* Top 5 transactions this month + Recent transactions side by side */}
+      <div className="dashboard-bottom-grid">
+        <TopTransactions transactions={transactions} loading={txLoading} />
+        <RecentTransactions transactions={transactions} loading={txLoading} />
+      </div>
 
     </div>
   )
