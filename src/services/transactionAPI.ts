@@ -27,5 +27,6 @@ export const transactionAPI = {
 
   delete: (id: string) => api.delete(`/api/transactions/${id}`),
 
-  getSummary: () => api.get("/api/summary"),
+  getSummary: (month?: string) =>
+    api.get("/api/summary", { params: month ? { month } : {} }),
 }

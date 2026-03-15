@@ -39,12 +39,31 @@ const navItems = [
     ),
   },
   {
+    path: "/budget",
+    label: "Ngân sách",
+    icon: (
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+        <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
+      </svg>
+    ),
+  },
+  {
     path: "/add-transaction",
     label: "Add Transaction",
     icon: (
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
         <circle cx="12" cy="12" r="9" />
         <path d="M12 8v8M8 12h8" />
+      </svg>
+    ),
+  },
+  {
+    path: "/profile",
+    label: "Profile",
+    icon: (
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+        <circle cx="12" cy="8" r="4" />
+        <path d="M4 20c0-4 3.6-7 8-7s8 3 8 7" />
       </svg>
     ),
   },

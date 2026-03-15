@@ -12,6 +12,9 @@ import AddTransaction from "./pages/AddTransaction"
 import TransactionList from "./pages/TransactionList"
 import Wallets from "./pages/Wallet"
 import WalletDetail from "./pages/WalletDetail"
+import Profile from "./pages/Profile"
+import MonthlySummary from "./pages/MonthlySummary"
+import BudgetPage from "./pages/Budget"
 
 
 const App: React.FC = () => {
@@ -80,6 +83,39 @@ const App: React.FC = () => {
               <PrivateRoute>
                 <Layout>
                   <WalletDetail />
+                </Layout>
+              </PrivateRoute>
+            }
+          />
+
+          <Route 
+            path="/profile" 
+            element={
+              <PrivateRoute>
+                <Layout>
+                  <Profile />
+                </Layout>
+              </PrivateRoute>
+            }
+          />
+          
+          <Route 
+            path="/summary" 
+            element={
+              <PrivateRoute>
+                <Layout>
+                  <MonthlySummary />
+                </Layout>
+              </PrivateRoute>
+            }
+          />
+          
+          <Route 
+            path="/budget" 
+            element={
+              <PrivateRoute>
+                <Layout>
+                  <BudgetPage />
                 </Layout>
               </PrivateRoute>
             }

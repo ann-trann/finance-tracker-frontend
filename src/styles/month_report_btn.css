@@ -1,0 +1,29 @@
+/* Month header wrapper — row with header + report btn */
+.month-header-wrap {
+  display: flex;
+  align-items: stretch;
+}
+
+.month-header {
+  flex: 1;
+}
+
+/* View report button on each MonthBlock */
+.month-report-btn {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 0 14px;
+  font-size: 0.78rem;
+  font-weight: 500;
+  color: var(--gold-light);
+  border-left: 1px solid var(--border);
+  background: none;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.15s, color 0.15s;
+  flex-shrink: 0;
+}
+.month-report-btn:hover {
+  background: var(--gold-dim);
+}

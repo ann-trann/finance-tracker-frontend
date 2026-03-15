@@ -13,3 +13,7 @@
 @import './add_transaction.css';
 @import './transaction_detail_modal.css';
 @import './wallet_page.css';
+@import './profile.css';
+@import './monthly_summary.css';
+@import './month_report_btn.css';
+@import './budget.css';

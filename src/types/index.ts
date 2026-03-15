@@ -4,6 +4,8 @@ export type TxType = CategoryType | "loan"
 export interface User {
   id: string
   email: string
+  name: string
+  createdAt: string
 }
 
 export interface Wallet {
@@ -49,10 +51,16 @@ export interface Transaction {
   createdAt: string
 }
 
+export interface CategoryStat {
+  name: string
+  amount: number
+}
+ 
 export interface Summary {
   income: number
   expense: number
   balance: number
+  categories: CategoryStat[]
 }
 
 export interface AuthContextType {
@@ -64,4 +72,27 @@ export interface AuthContextType {
   logout: () => void
 
   isAuthenticated: boolean
+}
+
+
+export interface BudgetProgress {
+  budgetId: string
+  category: string
+  budget: number
+  spent: number
+  remaining: number
+  percent: number
+}
+ 
+export interface Budget {
+  id: string
+  categoryId: string
+  amount: string | number
+  periodStart: string
+  category: {
+    id: string
+    name: string
+    type: string
+    icon?: string
+  }
 }

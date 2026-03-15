@@ -1,0 +1,245 @@
+/* ═══════════════════════════════════════
+   PROFILE PAGE
+═══════════════════════════════════════ */
+.profile-page {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* Logout button in header */
+.profile-logout-btn {
+  color: var(--red);
+  border-color: rgba(220,38,38,0.25);
+}
+.profile-logout-btn:hover {
+  background: var(--red-dim);
+  border-color: var(--red);
+  color: var(--red);
+}
+
+/* ── Section ── */
+.profile-section {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+.profile-section-header {
+  padding: 20px 24px 0;
+}
+.profile-section-title {
+  font-family: 'DM Serif Display', serif;
+  font-size: 1.05rem;
+  font-weight: 400;
+  color: var(--text);
+}
+.profile-section-sub {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  margin-top: 3px;
+}
+.profile-section-body {
+  padding: 20px 24px 24px;
+}
+
+/* ── Account section ── */
+.profile-account-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 28px;
+  margin-bottom: 20px;
+}
+@media (max-width: 560px) {
+  .profile-account-row { flex-direction: column; align-items: center; }
+}
+
+/* Avatar */
+.profile-avatar-wrap {
+  position: relative;
+  flex-shrink: 0;
+}
+.profile-avatar {
+  width: 72px; height: 72px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--gold) 0%, #e8c56a 100%);
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'DM Serif Display', serif;
+  font-size: 1.8rem;
+  color: #0c0d0f;
+  font-weight: 900;
+  position: relative;
+  z-index: 1;
+}
+.profile-avatar-ring {
+  position: absolute;
+  inset: -4px;
+  border-radius: 50%;
+  border: 2px solid var(--gold);
+  opacity: 0.3;
+}
+
+.profile-fields {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  min-width: 0;
+}
+.profile-member-since {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  margin-top: -4px;
+}
+
+.profile-save-row {
+  display: flex;
+  justify-content: flex-end;
+  padding-top: 4px;
+  border-top: 1px solid var(--border);
+}
+
+/* ── Language ── */
+.lang-options {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.lang-option {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 18px;
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  background: var(--bg3);
+  cursor: pointer;
+  transition: all 0.15s;
+  min-width: 180px;
+  position: relative;
+  text-align: left;
+}
+.lang-option:hover {
+  border-color: var(--border-hover);
+  background: var(--bg2);
+}
+.lang-active {
+  border-color: var(--gold) !important;
+  background: var(--gold-dim) !important;
+}
+.lang-flag {
+  font-size: 1.5rem;
+  line-height: 1;
+}
+.lang-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.lang-name {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--text);
+}
+.lang-code {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.lang-check {
+  margin-left: auto;
+  color: var(--gold-light);
+}
+
+/* ── Export ── */
+.export-options {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.export-card {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 16px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--bg3);
+  transition: border-color 0.15s;
+}
+.export-card:hover {
+  border-color: var(--border-hover);
+}
+.export-card-icon {
+  width: 40px; height: 40px;
+  border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.export-csv-icon {
+  background: rgba(22,163,74,0.1);
+  color: var(--green);
+}
+.export-excel-icon {
+  background: rgba(37,99,235,0.1);
+  color: #2563eb;
+}
+.export-card-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+.export-card-title {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--text);
+}
+.export-card-desc {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.export-btn {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+}
+
+/* ── Security / Password ── */
+.change-pw-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.pw-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  max-width: 400px;
+}
+.pw-form-actions {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+  padding-top: 4px;
+}
+
+
+.form-error {
+  font-size: 0.8rem;
+  color: var(--expense);   /* hoặc #ef4444 */
+  margin-bottom: 8px;
+}
+
+.form-success {
+  font-size: 0.8rem;
+  color: var(--income);    /* hoặc #22c55e */
+  margin-bottom: 8px;
+}
