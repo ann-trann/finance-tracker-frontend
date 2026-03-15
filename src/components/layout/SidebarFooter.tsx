@@ -21,10 +21,10 @@ const SidebarFooter: React.FC = () => {
 
         {/* Avatar using first letter of email */}
         <div className="user-avatar">
-          {user?.email?.[0]?.toUpperCase() || "U"}
+          {user?.name?.[0]?.toUpperCase() || user?.email?.[0]?.toUpperCase() || "U"}
         </div>
 
-        <div className="user-email">{user?.email}</div>
+        <div className="user-name">{user?.name || user?.email}</div>
       </div>
 
       {/* Logout button */}

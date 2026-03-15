@@ -1,13 +1,13 @@
 import { useState } from "react"
 import { userAPI } from "../services/userAPI"
 
-export const useProfile = () => {
-  const [loadingName, setLoadingName]   = useState(false)
-  const [loadingPw, setLoadingPw]       = useState(false)
-  const [nameError, setNameError]       = useState<string | null>(null)
-  const [nameSuccess, setNameSuccess]   = useState(false)
-  const [pwError, setPwError]           = useState<string | null>(null)
-  const [pwSuccess, setPwSuccess]       = useState(false)
+export const useProfile = (onNameUpdated?: (name: string) => void) => {
+  const [loadingName,    setLoadingName]   = useState(false)
+  const [loadingPw,      setLoadingPw]     = useState(false)
+  const [nameError,      setNameError]     = useState<string | null>(null)
+  const [nameSuccess,    setNameSuccess]   = useState(false)
+  const [pwError,        setPwError]       = useState<string | null>(null)
+  const [pwSuccess,      setPwSuccess]     = useState(false)
 
   const updateName = async (name: string, onSuccess?: (name: string) => void) => {
     setNameError(null)
@@ -17,6 +17,10 @@ export const useProfile = () => {
       const res = await userAPI.updateName(name)
       setNameSuccess(true)
       onSuccess?.(res.data.user.name)
+      setTimeout(() => setNameSuccess(false), 2000)
+      const updatedName = res.data.user.name
+      onSuccess?.(updatedName)
+      onNameUpdated?.(updatedName)
     } catch (err: any) {
       setNameError(err.response?.data?.error ?? "Failed to update name")
     } finally {
@@ -44,7 +48,7 @@ export const useProfile = () => {
   }
 
   return {
-    updateName,   loadingName, nameError,  nameSuccess,
-    changePassword, loadingPw,  pwError,    pwSuccess,
+    updateName, loadingName, nameError,  nameSuccess,
+    changePassword, loadingPw, pwError,  pwSuccess,
   }
 }

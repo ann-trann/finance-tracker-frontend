@@ -80,7 +80,15 @@
   border-top: 1px solid var(--border);
   display: flex;
   align-items: center;
+  justify-content: space-between;
   gap: 10px;
+}
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: 1;          /* ← chiếm hết space còn lại */
+  min-width: 0;     /* ← fix overflow ellipsis */
 }
 .user-avatar {
   width: 32px; height: 32px;
@@ -93,9 +101,9 @@
   color: var(--gold-light);
   flex-shrink: 0;
 }
-.user-email {
+.user-name {
   flex: 1;
-  font-size: 0.75rem;
+  font-size: 0.875rem;
   color: var(--text-sub);
   overflow: hidden;
   text-overflow: ellipsis;

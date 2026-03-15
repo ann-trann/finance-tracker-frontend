@@ -243,3 +243,9 @@
   color: var(--income);    /* hoặc #22c55e */
   margin-bottom: 8px;
 }
+
+.btn-success {
+  background-color: var(--income) !important;
+  border-color: var(--income) !important;
+  transition: background-color 0.2s ease;
+}
