@@ -1,19 +1,25 @@
-import React, { useState } from "react"
+import React from "react"
 import { Lang, LABELS } from "./types"
 import { Section } from "./Section"
+import { useTransactions, useExport } from "../../hooks"
 
 interface Props {
   lang: Lang
+  /** Optional: pre-filter exports by month (e.g. "2024-06") */
+  month?: string
+  /** Optional: pre-filter exports by type ("income" | "expense") */
+  type?: string
 }
 
-export const ExportSection: React.FC<Props> = ({ lang }) => {
+export const ExportSection: React.FC<Props> = ({ lang, month, type }) => {
   const t = LABELS[lang]
-  const [exporting, setExporting] = useState<"csv" | "excel" | null>(null)
 
-  const handleExport = (type: "csv" | "excel") => {
-    setExporting(type)
-    setTimeout(() => setExporting(null), 1800)
-  }
+  // Reuse existing hook — same data the page already loaded
+  const { transactions } = useTransactions(month, type)
+
+  // filename prefix reflects active filters
+  const prefix = ["transactions", month, type].filter(Boolean).join("-")
+  const { exporting, exportCSV, exportExcel } = useExport({ filenamePrefix: prefix })
 
   const DownloadIcon = () => (
     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -37,6 +43,7 @@ export const ExportSection: React.FC<Props> = ({ lang }) => {
       iconClass: "export-csv-icon",
       title: t.exportCSV,
       desc: t.exportCSVDesc,
+      onExport: () => exportCSV(transactions),
     },
     {
       type: "excel" as const,
@@ -50,6 +57,7 @@ export const ExportSection: React.FC<Props> = ({ lang }) => {
       iconClass: "export-excel-icon",
       title: t.exportExcel,
       desc: t.exportExcelDesc,
+      onExport: () => exportExcel(transactions),
     },
   ]
 
@@ -65,13 +73,19 @@ export const ExportSection: React.FC<Props> = ({ lang }) => {
             </div>
             <button
               className="btn-ghost btn-sm export-btn"
-              onClick={() => handleExport(card.type)}
+              onClick={card.onExport}
               disabled={!!exporting}
             >
               {exporting === card.type ? (
-                <><span className="spinner" style={{ borderTopColor: "var(--text-sub)" }} /> {t.preparing}</>
+                <>
+                  <span className="spinner" style={{ borderTopColor: "var(--text-sub)" }} />
+                  {t.preparing}
+                </>
               ) : (
-                <><DownloadIcon /> {card.title}</>
+                <>
+                  <DownloadIcon />
+                  {card.title}
+                </>
               )}
             </button>
           </div>
