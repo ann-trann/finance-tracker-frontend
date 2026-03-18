@@ -1,5 +1,7 @@
 import React, { useState, useMemo } from "react"
 import { useCategories } from "../../hooks/useCategories"
+import CategoryIcon from "../add_transaction/CategoriesIcon"
+import { Category } from "../../types"
 
 interface Props {
   period: string
@@ -10,26 +12,33 @@ interface Props {
 }
 
 const AddBudgetForm: React.FC<Props> = ({ period, onAdded, createBudget, budgetedCatIds, onClose }) => {
-  const { categories } = useCategories()
-  const [categoryId, setCategoryId] = useState("")
+  const { categories } = useCategories("expense")
+  const [selectedCategory, setSelectedCategory] = useState<Category | null>(null)
   const [amount, setAmount] = useState("")
   const [saving, setSaving] = useState(false)
   const [err, setErr] = useState("")
+  const [pickerOpen, setPickerOpen] = useState(false)
 
   const available = useMemo(
-    () => categories.filter((c) => c.type === "expense" && !budgetedCatIds.includes(c.id)),
+    () => categories.filter((c) => !budgetedCatIds.includes(c.id)),
     [categories, budgetedCatIds]
   )
 
+  const handleSelect = (cat: Category) => {
+    setSelectedCategory(cat)
+    setPickerOpen(false)
+    setErr("")
+  }
+
   const handleSubmit = async () => {
     setErr("")
-    if (!categoryId) return setErr("Vui lòng chọn danh mục")
+    if (!selectedCategory) return setErr("Vui lòng chọn danh mục")
     const parsed = parseFloat(amount)
     if (!parsed || parsed <= 0) return setErr("Nhập số tiền hợp lệ")
     setSaving(true)
     try {
-      await createBudget({ categoryId, amount: parsed, period })
-      setCategoryId("")
+      await createBudget({ categoryId: selectedCategory.id, amount: parsed, period })
+      setSelectedCategory(null)
       setAmount("")
       onAdded()
       onClose()
@@ -55,17 +64,35 @@ const AddBudgetForm: React.FC<Props> = ({ period, onAdded, createBudget, budgete
         {err && <div className="auth-error" style={{ marginBottom: 12 }}>{err}</div>}
 
         <div className="form-row" style={{ marginBottom: 14 }}>
+          {/* Category selector button */}
           <div className="field-group">
             <label className="field-label">Danh mục chi tiêu</label>
-            <select className="field-input" value={categoryId} onChange={(e) => setCategoryId(e.target.value)}>
-              <option value="">-- Chọn danh mục --</option>
-              {available.map((c) => (
-                <option key={c.id} value={c.id}>
-                  {c.icon ? `${c.icon} ` : ""}{c.name}
-                </option>
-              ))}
-            </select>
+            <button
+              type="button"
+              className="field-input budget-cat-trigger"
+              onClick={() => setPickerOpen(true)}
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: 8,
+                cursor: "pointer",
+                textAlign: "left",
+                background: "var(--input-bg, #fff)",
+                border: selectedCategory ? "1.5px solid var(--red)" : undefined,
+              }}
+            >
+              {selectedCategory ? (
+                <>
+                  <CategoryIcon name={selectedCategory.icon} size={16} />
+                  <span>{selectedCategory.name}</span>
+                </>
+              ) : (
+                <span style={{ color: "var(--text-muted, #aaa)" }}>-- Chọn danh mục --</span>
+              )}
+              <span style={{ marginLeft: "auto", opacity: 0.4, fontSize: 12 }}>▾</span>
+            </button>
           </div>
+
           <div className="field-group">
             <label className="field-label">Giới hạn (VNĐ)</label>
             <input
@@ -90,6 +117,58 @@ const AddBudgetForm: React.FC<Props> = ({ period, onAdded, createBudget, budgete
           </button>
         </div>
       </div>
+
+      {/* Category picker overlay — same pattern as CategoryPicker */}
+      {pickerOpen && (
+        <div className="picker-overlay" onClick={() => setPickerOpen(false)}>
+          <div className="picker-card" onClick={e => e.stopPropagation()}>
+
+            {/* Header */}
+            <div className="picker-header">
+              <span className="picker-title">Chọn danh mục chi tiêu</span>
+              <button className="picker-close" onClick={() => setPickerOpen(false)}>✕</button>
+            </div>
+
+            {/* Category list */}
+            <div className="picker-list">
+              {available.length === 0 ? (
+                <div className="picker-loading">Không có danh mục khả dụng</div>
+              ) : (
+                available.map(cat => (
+                  <div key={cat.id}>
+                    {/* Parent */}
+                    <div
+                      className="picker-item picker-item-selectable"
+                      onClick={() => handleSelect(cat)}
+                    >
+                      <span className="picker-item-icon">
+                        <CategoryIcon name={cat.icon} size={18} />
+                      </span>
+                      <span className="picker-item-name">{cat.name}</span>
+                    </div>
+
+                    {/* Children */}
+                    {cat.children?.map((child: Category) => (
+                      <div
+                        key={child.id}
+                        className="picker-subitem"
+                        onClick={() => handleSelect(child)}
+                      >
+                        <span className="picker-sub-dot" style={{ background: "var(--red)" }} />
+                        <span className="picker-subitem-icon">
+                          <CategoryIcon name={child.icon} size={14} />
+                        </span>
+                        <span className="picker-subitem-name">{child.name}</span>
+                      </div>
+                    ))}
+                  </div>
+                ))
+              )}
+            </div>
+
+          </div>
+        </div>
+      )}
     </div>
   )
 }

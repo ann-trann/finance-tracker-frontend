@@ -81,6 +81,32 @@
   margin-bottom: 16px;
 }
 
+/* ── Form actions: căn phải, gap đều, nút cùng chiều cao ── */
+.add-budget-form-wrap .form-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+.add-budget-form-wrap .form-actions .btn-ghost,
+.add-budget-form-wrap .form-actions .btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 36px;
+  padding: 0 16px;
+  border-radius: var(--radius-sm, 8px);
+  font-size: 0.85rem;
+  font-weight: 500;
+  line-height: 1;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: opacity 0.15s, background 0.15s;
+}
+
+
 /* ── Main layout (chart + list) ── */
 .budget-main-layout {
   display: grid;
